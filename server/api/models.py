@@ -32,3 +32,12 @@ class AuthUser(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         db_table = 'auth_user'
+
+
+class Brand(models.Model):
+    name = models.CharField(max_length=40, blank=False, unique=True)
+    country = models.CharField(max_length=30, blank=False)
+    year_of_foundation = models.CharField(max_length=4, blank=False)
+
+    class Meta:
+        db_table = 'brand'
