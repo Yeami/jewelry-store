@@ -45,7 +45,7 @@ class Brand(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=40, blank=False, unique=True)
-    country = models.TextField(blank=True)
+    description = models.TextField(blank=True)
 
     class Meta:
         db_table = 'category'
