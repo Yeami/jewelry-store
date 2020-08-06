@@ -72,3 +72,12 @@ class Order(models.Model):
 
     class Meta:
         db_table = 'order'
+
+
+class OrderProducts(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
+    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
+    amount = models.IntegerField(blank=False, default=1)
+
+    class Meta:
+        db_table = 'order_products'
