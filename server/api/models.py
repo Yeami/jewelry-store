@@ -62,3 +62,13 @@ class Product(models.Model):
 
     class Meta:
         db_table = 'product'
+
+
+class Order(models.Model):
+    customer = models.ForeignKey(AuthUser, related_name='customer_id', on_delete=models.DO_NOTHING)
+    worker = models.ForeignKey(AuthUser, related_name='worker_id', on_delete=models.DO_NOTHING)
+    note = models.TextField(blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        db_table = 'order'
