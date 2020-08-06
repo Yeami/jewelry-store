@@ -49,3 +49,16 @@ class Category(models.Model):
 
     class Meta:
         db_table = 'category'
+
+
+class Product(models.Model):
+    name = models.CharField(max_length=40, blank=False, unique=True)
+    description = models.TextField(blank=True)
+    price = models.CharField(max_length=20)
+    amount = models.IntegerField(blank=False, default=0)
+    is_available = models.BooleanField(blank=False, default=False)
+    brand = models.ForeignKey(Brand, on_delete=models.DO_NOTHING)
+    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
+
+    class Meta:
+        db_table = 'product'
