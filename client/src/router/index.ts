@@ -2,7 +2,9 @@ import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 
 import { isAuthenticated, isNotAuthenticated } from '@/services/auth.service';
+import TheBasketPage from '@/views/TheBasketPage.vue';
 import TheLoginPage from '@/views/TheLoginPage.vue';
+import TheProductsPage from '@/views/TheProductsPage.vue';
 import TheProfilePage from '@/views/TheProfilePage.vue';
 import TheRouterView from '@/views/TheRouterView.vue';
 
@@ -24,6 +26,16 @@ const routes: Array<RouteConfig> = [
     component: TheRouterView,
     beforeEnter: (to, from, next) => isAuthenticated(to, from, next),
     children: [
+      {
+        path: 'products',
+        name: 'products',
+        component: TheProductsPage,
+      },
+      {
+        path: 'basket',
+        name: 'basket',
+        component: TheBasketPage,
+      },
       {
         path: 'profile',
         name: 'profile',
