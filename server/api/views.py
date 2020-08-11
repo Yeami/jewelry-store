@@ -6,8 +6,8 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from server.api.models import AuthUser
-from server.api.serializers import UserSerializer
+from server.api.models import AuthUser, Brand
+from server.api.serializers import UserSerializer, BrandSerializer
 
 
 class AuthTokenLogin(ObtainAuthToken):
@@ -55,3 +55,16 @@ class Me(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ListBrand(APIView):
+    serializer = BrandSerializer
+    model = Brand
+    http_method_names = ['get']
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request):
+        brands = self.model.objects.all()
+        serializer = self.serializer(brands, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
