@@ -10,8 +10,9 @@ import {
   GET_USER, LOGIN_USER, LOGOUT_USER, UPDATE_USER,
 } from '@/store/actions.type';
 import {
+  CLEAR_BASKET,
   SET_BRANDS, SET_CATEGORIES, SET_ERROR,
-  SET_PRODUCTS, SET_TOKEN, SET_USER,
+  SET_PRODUCTS, SET_TOKEN, SET_USER, UPDATE_BASKET,
 } from '@/store/mutations.type';
 
 Vue.use(Vuex);
@@ -24,6 +25,8 @@ export default new Vuex.Store({
     brands: null,
     categories: null,
     products: null,
+    basket: [] as any,
+    basketSum: 0,
   },
   getters: {
     user(state) {
@@ -43,6 +46,12 @@ export default new Vuex.Store({
     },
     products(state) {
       return state.products;
+    },
+    basket(state) {
+      return state.basket;
+    },
+    basketSum(state) {
+      return state.basketSum;
     },
   },
   actions: {
@@ -129,6 +138,13 @@ export default new Vuex.Store({
     },
     [SET_PRODUCTS](state, products) {
       state.products = products;
+    },
+    [UPDATE_BASKET](state, product) {
+      state.basket.push(product);
+      state.basketSum += parseFloat(product.price);
+    },
+    [CLEAR_BASKET](state) {
+      state.basket = [];
     },
   },
 });

@@ -4,3 +4,5 @@ export const SET_TOKEN = 'SET_TOKEN';
 export const SET_BRANDS = 'SET_BRANDS';
 export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
+export const UPDATE_BASKET = 'UPDATE_BASKET';
+export const CLEAR_BASKET = 'CLEAR_BASKET';
