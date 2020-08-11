@@ -1,8 +1,8 @@
 <template>
-  <div class="products-wrapper">
+  <div class="products-wrapper" v-if="products">
     <h3>{{description}} - {{getProducts.length}} items</h3>
 
-    <div class="product-card" v-if="products">
+    <div class="product-card">
       <a-card
           v-for="item in getProducts"
           :key="item.id"
@@ -29,7 +29,12 @@
           <span :style="`color: ${item.is_available ? 'green' : 'red'}`"> {{isAvailable(item.is_available)}}</span>
         </span>
 
-        <a-button type="primary" style="margin-top: 0.5rem" :disabled="!item.is_available">
+        <a-button
+            type="primary"
+            style="margin-top: 0.5rem"
+            :disabled="!item.is_available"
+            @click="onClick(item)"
+        >
           <a-icon type="shopping-cart" /> Add to basket
         </a-button>
 
@@ -39,6 +44,8 @@
 </template>
 
 <script>
+import { UPDATE_BASKET } from '@/store/mutations.type';
+
 export default {
   name: 'TheProductsWrapper',
   props: {
@@ -46,11 +53,6 @@ export default {
     description: String,
     products: Array,
     brands: Array,
-  },
-  data() {
-    return {
-      imageNotFound: '/image-not-found.png',
-    };
   },
   computed: {
     getProducts() {
@@ -60,12 +62,20 @@ export default {
       return this.products;
     },
   },
+  data() {
+    return {
+      imageNotFound: '/image-not-found.png',
+    };
+  },
   methods: {
     getBrandById(id) {
       return this.brands.find((brand) => brand.id === id).name;
     },
     isAvailable(availability) {
       return availability ? 'Yes' : 'No';
+    },
+    onClick(product) {
+      this.$store.commit(UPDATE_BASKET, product);
     },
   },
 };
