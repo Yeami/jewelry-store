@@ -2,7 +2,7 @@
   <div class="profile-page-wrapper">
     <h1>Profile page</h1>
 
-    <div class="content card" v-if="user">
+    <div class="profile-content card" v-if="user">
 
       <div class="left-column">
         <span>Username: {{user.username}}</span>
@@ -169,7 +169,7 @@ export default {
 </script>
 
 <style lang="scss">
-  .content {
+  .profile-content {
     display: flex;
     flex-wrap: wrap;
     width: 50rem;
