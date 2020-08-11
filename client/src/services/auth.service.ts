@@ -2,8 +2,8 @@ import axios from 'axios';
 
 import router from '@/router';
 import store from '@/store';
-import { GET_USER } from '@/store/user/actions.type';
-import { SET_TOKEN, SET_USER, SET_USER_ERROR } from '@/store/user/mutations.type';
+import { GET_USER } from '@/store/actions.type';
+import { SET_TOKEN, SET_USER, SET_USER_ERROR } from '@/store/mutations.type';
 
 export const setAuthInterceptor = () => {
   axios.interceptors.response.use((response) => response, (error) => {

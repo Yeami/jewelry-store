@@ -75,7 +75,7 @@
 import moment from 'moment';
 import { mapGetters } from 'vuex';
 
-import { LOGOUT_USER, UPDATE_USER } from '@/store/user/actions.type';
+import { LOGOUT_USER, UPDATE_USER } from '@/store/actions.type';
 
 export default {
   name: 'TheProfilePage',

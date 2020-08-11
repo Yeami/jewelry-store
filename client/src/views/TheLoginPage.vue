@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { LOGIN_USER } from '@/store/user/actions.type';
+import { LOGIN_USER } from '@/store/actions.type';
 
 export default {
   name: 'TheLoginPage',
