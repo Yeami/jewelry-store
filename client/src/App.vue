@@ -5,6 +5,20 @@
 </template>
 
 <style lang="scss">
+  *::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+
+  *::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.0);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    border-radius: 3px;
+  }
+
   #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
