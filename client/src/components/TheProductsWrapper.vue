@@ -1,6 +1,6 @@
 <template>
   <div class="products-wrapper">
-    <h3>{{description}}</h3>
+    <h3>{{description}} - {{getProducts.length}} items</h3>
 
     <div class="product-card" v-if="products">
       <a-card
@@ -9,21 +9,30 @@
           :title="item.name"
           style="max-width: 300px"
       >
+        <img
+          slot="cover"
+          :alt="item.name"
+          :src="item.picture ? item.picture : imageNotFound"
+        />
+
         <a-popover slot="extra" :title="item.name">
           <template slot="content">
             <span>{{item.description}}</span>
           </template>
           <a href="#">More</a>
         </a-popover>
+
         <span>Price: ${{item.price}}</span>
         <span>Amount: {{item.amount}}</span>
         <span>Brand: {{getBrandById(item.brand)}}</span>
         <span>Is available:
           <span :style="`color: ${item.is_available ? 'green' : 'red'}`"> {{isAvailable(item.is_available)}}</span>
         </span>
-        <a-button type="primary" style="margin-top: 0.5rem">
+
+        <a-button type="primary" style="margin-top: 0.5rem" :disabled="!item.is_available">
           <a-icon type="shopping-cart" /> Add to basket
         </a-button>
+
       </a-card>
     </div>
   </div>
@@ -37,6 +46,11 @@ export default {
     description: String,
     products: Array,
     brands: Array,
+  },
+  data() {
+    return {
+      imageNotFound: '/image-not-found.png',
+    };
   },
   computed: {
     getProducts() {
@@ -74,6 +88,11 @@ export default {
           display: flex;
           flex-direction: column;
         }
+      }
+
+      img {
+        width: 18.625rem;
+        height: 18.625rem;
       }
     }
   }
