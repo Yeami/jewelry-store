@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from server.api.models import AuthUser, Brand, Category
+from server.api.models import AuthUser, Brand, Category, Product
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -37,4 +37,10 @@ class BrandSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
+        fields = '__all__'
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
         fields = '__all__'

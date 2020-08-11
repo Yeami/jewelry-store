@@ -64,7 +64,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=40, blank=False, unique=True)
+    name = models.TextField(blank=False, unique=True)
     description = models.TextField(blank=True)
     price = models.CharField(max_length=20)
     amount = models.IntegerField(blank=False, default=0)
