@@ -71,6 +71,7 @@ class Product(models.Model):
     is_available = models.BooleanField(blank=False, default=False)
     brand = models.ForeignKey(Brand, on_delete=models.DO_NOTHING)
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
+    picture = models.TextField(blank=True)
 
     class Meta:
         db_table = 'product'
