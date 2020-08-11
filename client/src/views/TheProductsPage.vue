@@ -2,17 +2,32 @@
   <div class="products-page-wrapper">
     <h1>Products page</h1>
 
-    <div class="content">
-      <a-tabs default-active-key="1" tab-position="left" v-if="categories">
+    <div class="products-content">
+      <a-tabs
+          v-if="categories"
+          default-active-key="0"
+          tab-position="left"
+          @change="onTabChange"
+      >
         <a-tab-pane key="0" tab="All">
-          Content of All
+          <the-products-wrapper
+              :category="0"
+              description="The full list of products"
+              :products="products"
+              :brands="brands"
+          />
         </a-tab-pane>
         <a-tab-pane
             v-for="item in categories"
             :key="item.id"
             :tab="item.name"
         >
-          {{item.description}}
+          <the-products-wrapper
+              :category="item.id"
+              :description="item.description"
+              :products="products"
+              :brands="brands"
+          />
         </a-tab-pane>
       </a-tabs>
     </div>
@@ -23,19 +38,30 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import { GET_BRANDS, GET_CATEGORIES } from '@/store/actions.type';
+import TheProductsWrapper from '@/components/TheProductsWrapper';
+import { GET_BRANDS, GET_CATEGORIES, GET_PRODUCTS } from '@/store/actions.type';
 
 export default {
   name: 'TheProductsPage',
+  components: {
+    TheProductsWrapper,
+  },
   computed: {
     ...mapGetters([
       'brands',
       'categories',
+      'products',
     ]),
+  },
+  methods: {
+    onTabChange(key) {
+      console.log(key);
+    },
   },
   mounted() {
     this.$store.dispatch(GET_BRANDS);
     this.$store.dispatch(GET_CATEGORIES);
+    this.$store.dispatch(GET_PRODUCTS);
   },
 };
 </script>
