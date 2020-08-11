@@ -7,7 +7,6 @@
           v-if="categories"
           default-active-key="0"
           tab-position="left"
-          @change="onTabChange"
       >
         <a-tab-pane key="0" tab="All">
           <the-products-wrapper
@@ -52,11 +51,6 @@ export default {
       'categories',
       'products',
     ]),
-  },
-  methods: {
-    onTabChange(key) {
-      console.log(key);
-    },
   },
   mounted() {
     this.$store.dispatch(GET_BRANDS);
