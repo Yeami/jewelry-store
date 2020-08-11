@@ -6,11 +6,11 @@ import router from '@/router';
 import { ApiService } from '@/services/api.service';
 import { setAuthToken, setUserData } from '@/services/auth.service';
 import {
-  GET_BRANDS,
+  GET_BRANDS, GET_CATEGORIES,
   GET_USER, LOGIN_USER, LOGOUT_USER, UPDATE_USER,
 } from '@/store/actions.type';
 import {
-  SET_BRANDS, SET_TOKEN, SET_USER, SET_USER_ERROR,
+  SET_BRANDS, SET_CATEGORIES, SET_TOKEN, SET_USER, SET_USER_ERROR,
 } from '@/store/mutations.type';
 
 Vue.use(Vuex);
@@ -21,6 +21,7 @@ export default new Vuex.Store({
     errors: null,
     token: null,
     brands: null,
+    categories: null,
   },
   getters: {
     user(state) {
@@ -34,6 +35,9 @@ export default new Vuex.Store({
     },
     brands(state) {
       return state.brands;
+    },
+    categories(state) {
+      return state.categories;
     },
   },
   actions: {
@@ -82,6 +86,15 @@ export default new Vuex.Store({
           context.commit(SET_USER_ERROR, response.data);
         });
     },
+    [GET_CATEGORIES]: (context: any) => {
+      ApiService.get('/category')
+        .then((response) => {
+          context.commit(SET_CATEGORIES, response.data);
+        })
+        .catch(({ response }) => {
+          context.commit(SET_USER_ERROR, response.data);
+        });
+    },
   },
   mutations: {
     [SET_USER](state, user) {
@@ -96,6 +109,9 @@ export default new Vuex.Store({
     },
     [SET_BRANDS](state, brands) {
       state.brands = brands;
+    },
+    [SET_CATEGORIES](state, categories) {
+      state.categories = categories;
     },
   },
 });
