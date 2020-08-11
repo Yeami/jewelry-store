@@ -3,7 +3,7 @@ import axios from 'axios';
 import router from '@/router';
 import store from '@/store';
 import { GET_USER } from '@/store/actions.type';
-import { SET_TOKEN, SET_USER, SET_USER_ERROR } from '@/store/mutations.type';
+import { SET_ERROR, SET_TOKEN, SET_USER } from '@/store/mutations.type';
 
 export const setAuthInterceptor = () => {
   axios.interceptors.response.use((response) => response, (error) => {
@@ -37,7 +37,7 @@ export const setUserData = (context: any, data: any) => {
   localStorage.setItem('auth-token', token);
   setAuthToken(token);
 
-  context.commit(SET_USER_ERROR, {});
+  context.commit(SET_ERROR, {});
   context.commit(SET_USER, data.user);
   context.commit(SET_TOKEN, token);
 };

@@ -6,11 +6,12 @@ import router from '@/router';
 import { ApiService } from '@/services/api.service';
 import { setAuthToken, setUserData } from '@/services/auth.service';
 import {
-  GET_BRANDS, GET_CATEGORIES,
+  GET_BRANDS, GET_CATEGORIES, GET_PRODUCTS,
   GET_USER, LOGIN_USER, LOGOUT_USER, UPDATE_USER,
 } from '@/store/actions.type';
 import {
-  SET_BRANDS, SET_CATEGORIES, SET_TOKEN, SET_USER, SET_USER_ERROR,
+  SET_BRANDS, SET_CATEGORIES, SET_ERROR,
+  SET_PRODUCTS, SET_TOKEN, SET_USER,
 } from '@/store/mutations.type';
 
 Vue.use(Vuex);
@@ -22,12 +23,13 @@ export default new Vuex.Store({
     token: null,
     brands: null,
     categories: null,
+    products: null,
   },
   getters: {
     user(state) {
       return state.user;
     },
-    userErrors(state) {
+    errors(state) {
       return state.errors;
     },
     token(state) {
@@ -39,6 +41,9 @@ export default new Vuex.Store({
     categories(state) {
       return state.categories;
     },
+    products(state) {
+      return state.products;
+    },
   },
   actions: {
     [LOGIN_USER]: (context: any, user: UserModel) => {
@@ -48,7 +53,7 @@ export default new Vuex.Store({
           router.push('/profile');
         })
         .catch(({ response }) => {
-          context.commit(SET_USER_ERROR, response.data);
+          context.commit(SET_ERROR, response.data);
         });
     },
     [LOGOUT_USER]: (context: any) => {
@@ -65,7 +70,7 @@ export default new Vuex.Store({
           context.commit(SET_TOKEN, token);
         })
         .catch(({ response }) => {
-          context.commit(SET_USER_ERROR, response.data);
+          context.commit(SET_ERROR, response.data);
         });
     },
     [UPDATE_USER]: (context: any, user: UserModel) => {
@@ -74,7 +79,7 @@ export default new Vuex.Store({
           context.commit(SET_USER, response.data);
         })
         .catch(({ response }) => {
-          context.commit(SET_USER_ERROR, response.data);
+          context.commit(SET_ERROR, response.data);
         });
     },
     [GET_BRANDS]: (context: any) => {
@@ -83,7 +88,7 @@ export default new Vuex.Store({
           context.commit(SET_BRANDS, response.data);
         })
         .catch(({ response }) => {
-          context.commit(SET_USER_ERROR, response.data);
+          context.commit(SET_ERROR, response.data);
         });
     },
     [GET_CATEGORIES]: (context: any) => {
@@ -92,7 +97,16 @@ export default new Vuex.Store({
           context.commit(SET_CATEGORIES, response.data);
         })
         .catch(({ response }) => {
-          context.commit(SET_USER_ERROR, response.data);
+          context.commit(SET_ERROR, response.data);
+        });
+    },
+    [GET_PRODUCTS]: (context: any) => {
+      ApiService.get('/product')
+        .then((response) => {
+          context.commit(SET_PRODUCTS, response.data);
+        })
+        .catch(({ response }) => {
+          context.commit(SET_ERROR, response.data);
         });
     },
   },
@@ -101,7 +115,7 @@ export default new Vuex.Store({
       state.user = user;
       state.errors = null;
     },
-    [SET_USER_ERROR](state, errors) {
+    [SET_ERROR](state, errors) {
       state.errors = errors;
     },
     [SET_TOKEN](state, token) {
@@ -112,6 +126,9 @@ export default new Vuex.Store({
     },
     [SET_CATEGORIES](state, categories) {
       state.categories = categories;
+    },
+    [SET_PRODUCTS](state, products) {
+      state.products = products;
     },
   },
 });
