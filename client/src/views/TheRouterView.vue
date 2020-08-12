@@ -9,12 +9,19 @@
 
       <div class="navbar-items">
         <router-link
-          class="navbar-item"
-          v-for="routes in links"
-          :key="routes.id"
-          :to="`${routes.page}`"
+            class="navbar-item"
+            v-for="routes in links"
+            :key="routes.id"
+            :to="`${routes.page}`"
         >
           {{routes.text}}
+        </router-link>
+        <router-link
+            v-if="isAvailable"
+            class="navbar-item"
+            to="/orders"
+        >
+          Orders
         </router-link>
       </div>
 
@@ -33,6 +40,8 @@
 <script>
 import { mapGetters } from 'vuex';
 
+import RolesType from '@/types/roles.type';
+
 export default {
   name: 'TheRouterView',
   computed: {
@@ -45,6 +54,9 @@ export default {
       }
 
       return this.user?.username;
+    },
+    isAvailable() {
+      return this.user && (this.user.role === RolesType.MANAGER || this.user.role === RolesType.ADMIN);
     },
   },
   data() {

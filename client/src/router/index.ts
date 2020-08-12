@@ -4,6 +4,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import { isAuthenticated, isNotAuthenticated } from '@/services/auth.service';
 import TheBasketPage from '@/views/TheBasketPage.vue';
 import TheLoginPage from '@/views/TheLoginPage.vue';
+import TheOrdersPage from '@/views/TheOrdersPage.vue';
 import TheProductsPage from '@/views/TheProductsPage.vue';
 import TheProfilePage from '@/views/TheProfilePage.vue';
 import TheRouterView from '@/views/TheRouterView.vue';
@@ -40,6 +41,11 @@ const routes: Array<RouteConfig> = [
         path: 'profile',
         name: 'profile',
         component: TheProfilePage,
+      },
+      {
+        path: 'orders',
+        name: 'orders',
+        component: TheOrdersPage,
       },
     ],
   },
