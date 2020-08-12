@@ -5,8 +5,13 @@
 </template>
 
 <script>
+import { GET_CUSTOMER_ORDERS } from '@/store/actions.type';
+
 export default {
   name: 'TheOrdersPage',
+  mounted() {
+    this.$store.dispatch(GET_CUSTOMER_ORDERS);
+  },
 };
 </script>
 

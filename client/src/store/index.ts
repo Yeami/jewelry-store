@@ -7,12 +7,12 @@ import { ApiService } from '@/services/api.service';
 import { setAuthToken, setUserData } from '@/services/auth.service';
 import {
   CONFIRM_ORDER,
-  GET_BRANDS, GET_CATEGORIES, GET_PRODUCTS,
+  GET_BRANDS, GET_CATEGORIES, GET_CUSTOMER_ORDERS, GET_PRODUCTS,
   GET_USER, LOGIN_USER, LOGOUT_USER, UPDATE_USER,
 } from '@/store/actions.type';
 import {
   CLEAR_BASKET,
-  SET_BRANDS, SET_CATEGORIES, SET_ERROR,
+  SET_BRANDS, SET_CATEGORIES, SET_ERROR, SET_ORDERS,
   SET_PRODUCTS, SET_TOKEN, SET_USER, UPDATE_BASKET,
 } from '@/store/mutations.type';
 
@@ -28,6 +28,7 @@ export default new Vuex.Store({
     products: null,
     basket: [] as any,
     basketSum: 0,
+    orders: [] as any,
   },
   getters: {
     user(state) {
@@ -53,6 +54,9 @@ export default new Vuex.Store({
     },
     basketSum(state) {
       return state.basketSum;
+    },
+    orders(state) {
+      return state.orders;
     },
   },
   actions: {
@@ -128,6 +132,15 @@ export default new Vuex.Store({
           context.commit(SET_ERROR, response.data);
         });
     },
+    [GET_CUSTOMER_ORDERS]: (context: any, basket) => {
+      ApiService.get('/orders')
+        .then((response) => {
+          context.commit(SET_ORDERS, response.data);
+        })
+        .catch(({ response }) => {
+          context.commit(SET_ERROR, response.data);
+        });
+    },
   },
   mutations: {
     [SET_USER](state, user) {
@@ -156,6 +169,9 @@ export default new Vuex.Store({
     [CLEAR_BASKET](state) {
       state.basket = [];
       state.basketSum = 0;
+    },
+    [SET_ORDERS](state, orders) {
+      state.orders = orders;
     },
   },
 });

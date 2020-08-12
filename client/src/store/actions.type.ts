@@ -6,3 +6,4 @@ export const GET_BRANDS = 'GET_BRANDS';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const GET_PRODUCTS = 'GET_PRODUCTS';
 export const CONFIRM_ORDER = 'CONFIRM_ORDER';
+export const GET_CUSTOMER_ORDERS = 'GET_CUSTOMER_ORDERS';
