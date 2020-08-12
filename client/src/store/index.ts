@@ -6,6 +6,7 @@ import router from '@/router';
 import { ApiService } from '@/services/api.service';
 import { setAuthToken, setUserData } from '@/services/auth.service';
 import {
+  CONFIRM_ORDER,
   GET_BRANDS, GET_CATEGORIES, GET_PRODUCTS,
   GET_USER, LOGIN_USER, LOGOUT_USER, UPDATE_USER,
 } from '@/store/actions.type';
@@ -118,6 +119,15 @@ export default new Vuex.Store({
           context.commit(SET_ERROR, response.data);
         });
     },
+    [CONFIRM_ORDER]: (context: any, basket) => {
+      ApiService.post('/order', basket)
+        .then(() => {
+          context.commit(CLEAR_BASKET);
+        })
+        .catch(({ response }) => {
+          context.commit(SET_ERROR, response.data);
+        });
+    },
   },
   mutations: {
     [SET_USER](state, user) {
@@ -145,6 +155,7 @@ export default new Vuex.Store({
     },
     [CLEAR_BASKET](state) {
       state.basket = [];
+      state.basketSum = 0;
     },
   },
 });

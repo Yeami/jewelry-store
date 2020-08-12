@@ -16,6 +16,7 @@
         <a-button
             type="primary"
             :disabled="!basket.length"
+            @click="confirmOrder"
         >
           Confirm order
         </a-button>
@@ -49,6 +50,8 @@
 <script>
 import { mapGetters } from 'vuex';
 
+import { CONFIRM_ORDER } from '@/store/actions.type';
+
 export default {
   name: 'TheBasketPage',
   computed: {
@@ -66,6 +69,9 @@ export default {
   methods: {
     getBrandById(id) {
       return this.brands.find((brand) => brand.id === id).name;
+    },
+    confirmOrder() {
+      this.$store.dispatch(CONFIRM_ORDER, this.basket);
     },
   },
 };
