@@ -108,3 +108,5 @@ dist
 
 # Virtual environment
 .venv
+
+server/api/fixtures
