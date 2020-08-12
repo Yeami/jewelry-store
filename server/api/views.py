@@ -1,12 +1,15 @@
+import random
+from collections import Counter
 from datetime import datetime
 
+from django.db import connections
 from rest_framework import permissions, status
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from server.api.models import AuthUser, Brand, Category, Product
+from server.api.models import AuthUser, Brand, Category, Product, Order
 from server.api.serializers import UserSerializer, BrandSerializer, CategorySerializer, ProductSerializer
 
 
@@ -94,3 +97,30 @@ class ListProduct(APIView):
         serializer = self.serializer(products, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ListOrder(APIView):
+    http_method_names = ['post']
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request):
+        manager = random.choice(AuthUser.objects.raw(
+            '''SELECT * FROM auth_user WHERE role_id = (SELECT id FROM roles WHERE name = 'MANAGER')'''
+        ))
+
+        cursor = connections['default'].cursor()
+        cursor.execute(
+            '''INSERT INTO "order" (note, created_at, customer_id, worker_id) VALUES (%s, %s, %s, %s)''',
+            ['', datetime.now(), request.user.id, manager.id]
+        )
+
+        order_id = Order.objects.raw('''SELECT id FROM "order" ORDER BY id DESC LIMIT 1''')[0].id
+
+        counted_products = dict(Counter([item.get('id') for item in request.data]))
+        for product in counted_products:
+            cursor.execute(
+                '''INSERT INTO order_products (amount, order_id, product_id) VALUES (%s, %s, %s)''',
+                [counted_products[product], order_id, product]
+            )
+
+        return Response(status=status.HTTP_200_OK)
