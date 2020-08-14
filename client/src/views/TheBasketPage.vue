@@ -13,6 +13,8 @@
           style="margin-right: 50px"
         />
 
+        <a-textarea v-model="note" placeholder="Basic usage" :rows="1" />
+
         <a-button
             type="primary"
             :disabled="!basket.length"
@@ -64,6 +66,7 @@ export default {
   data() {
     return {
       imageNotFound: '/image-not-found.png',
+      note: '',
     };
   },
   methods: {
@@ -71,7 +74,7 @@ export default {
       return this.brands.find((brand) => brand.id === id).name;
     },
     confirmOrder() {
-      this.$store.dispatch(CONFIRM_ORDER, this.basket);
+      this.$store.dispatch(CONFIRM_ORDER, { note: this.note, basket: this.basket });
     },
   },
 };

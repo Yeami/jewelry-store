@@ -115,12 +115,12 @@ class ListOrder(APIView):
         cursor = connections['default'].cursor()
         cursor.execute(
             '''INSERT INTO "order" (note, created_at, customer_id, worker_id) VALUES (%s, %s, %s, %s)''',
-            ['', datetime.now(), request.user.id, manager.id]
+            [request.data.get('note'), datetime.now(), request.user.id, manager.id]
         )
 
         order_id = Order.objects.raw('''SELECT id FROM "order" ORDER BY id DESC LIMIT 1''')[0].id
 
-        counted_products = dict(Counter([item.get('id') for item in request.data]))
+        counted_products = dict(Counter([item.get('id') for item in request.data.get('basket')]))
         for product in counted_products:
             cursor.execute(
                 '''INSERT INTO order_products (amount, order_id, product_id) VALUES (%s, %s, %s)''',
