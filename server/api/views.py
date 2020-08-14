@@ -43,7 +43,8 @@ class Me(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
-        me = self.model.objects.get(id=request.user.id)
+        # me = self.model.objects.get(id=request.user.id)
+        me = AuthUser.objects.raw('''SELECT * FROM auth_user WHERE id = %s ORDER BY id''', [request.user.id])[0]
         serializer = self.serializer(me)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -67,7 +68,8 @@ class ListBrand(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
-        brands = self.model.objects.all()
+        # brands = self.model.objects.all()
+        brands = list(Category.objects.raw('''SELECT * FROM brand ORDER BY id'''))
         serializer = self.serializer(brands, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -80,7 +82,8 @@ class ListCategory(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
-        categories = self.model.objects.all()
+        # categories = self.model.objects.all()
+        categories = list(Category.objects.raw('''SELECT * FROM category ORDER BY id'''))
         serializer = self.serializer(categories, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -93,7 +96,8 @@ class ListProduct(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
-        products = self.model.objects.all()
+        # products = self.model.objects.all()
+        products = list(Product.objects.raw('''SELECT * FROM product ORDER BY id'''))
         serializer = self.serializer(products, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
