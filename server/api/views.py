@@ -64,12 +64,24 @@ class Me(APIView):
 class ListBrand(APIView):
     serializer = BrandSerializer
     model = Brand
-    http_method_names = ['get']
+    http_method_names = ['get', 'post']
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
         # brands = self.model.objects.all()
-        brands = list(Category.objects.raw('''SELECT * FROM brand ORDER BY id'''))
+        brands = list(Brand.objects.raw('''SELECT * FROM brand ORDER BY id'''))
+        serializer = self.serializer(brands, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        cursor = connections['default'].cursor()
+        cursor.execute(
+            '''INSERT INTO "brand" (name, country, year_of_foundation) VALUES (%s, %s, %s)''',
+            [request.data.get('name'), request.data.get('country'), request.data.get('year')]
+        )
+
+        brands = list(Brand.objects.raw('''SELECT * FROM brand ORDER BY id'''))
         serializer = self.serializer(brands, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -78,7 +90,7 @@ class ListBrand(APIView):
 class ListCategory(APIView):
     serializer = CategorySerializer
     model = Category
-    http_method_names = ['get']
+    http_method_names = ['get', 'post']
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
@@ -88,15 +100,49 @@ class ListCategory(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    def post(self, request):
+        cursor = connections['default'].cursor()
+        cursor.execute(
+            '''INSERT INTO "category" (name, description) VALUES (%s, %s)''',
+            [request.data.get('name'), request.data.get('description')]
+        )
+
+        brands = list(Category.objects.raw('''SELECT * FROM category ORDER BY id'''))
+        serializer = self.serializer(brands, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class ListProduct(APIView):
     serializer = ProductSerializer
     model = Product
-    http_method_names = ['get']
+    http_method_names = ['get', 'post']
     permission_classes = (permissions.IsAuthenticated,)
 
     def get(self, request):
         # products = self.model.objects.all()
+        products = list(Product.objects.raw('''SELECT * FROM product ORDER BY id'''))
+        serializer = self.serializer(products, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        data = request.data
+        cursor = connections['default'].cursor()
+        cursor.execute('''
+            INSERT INTO "product" (name, description, price, amount, is_available, brand_id, category_id, picture)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        ''', [
+            data.get('name'),
+            data.get('description'),
+            data.get('price'),
+            data.get('amount'),
+            data.get('isAvailable'),
+            data.get('brand'),
+            data.get('category'),
+            data.get('picture')
+        ])
+
         products = list(Product.objects.raw('''SELECT * FROM product ORDER BY id'''))
         serializer = self.serializer(products, many=True)
 
