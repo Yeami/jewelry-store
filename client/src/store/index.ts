@@ -6,7 +6,7 @@ import router from '@/router';
 import { ApiService } from '@/services/api.service';
 import { setAuthToken, setUserData } from '@/services/auth.service';
 import {
-  CONFIRM_ORDER,
+  CONFIRM_ORDER, CREATE_BRAND, CREATE_CATEGORY, CREATE_PRODUCT,
   GET_BRANDS, GET_CATEGORIES, GET_CUSTOMER_ORDERS, GET_PRODUCTS,
   GET_USER, LOGIN_USER, LOGOUT_USER, UPDATE_USER,
 } from '@/store/actions.type';
@@ -132,10 +132,37 @@ export default new Vuex.Store({
           context.commit(SET_ERROR, response.data);
         });
     },
-    [GET_CUSTOMER_ORDERS]: (context: any, basket) => {
+    [GET_CUSTOMER_ORDERS]: (context: any) => {
       ApiService.get('/orders')
         .then((response) => {
           context.commit(SET_ORDERS, response.data);
+        })
+        .catch(({ response }) => {
+          context.commit(SET_ERROR, response.data);
+        });
+    },
+    [CREATE_BRAND]: (context: any, brand) => {
+      ApiService.post('/brand', brand)
+        .then((response) => {
+          context.commit(SET_BRANDS, response.data);
+        })
+        .catch(({ response }) => {
+          context.commit(SET_ERROR, response.data);
+        });
+    },
+    [CREATE_CATEGORY]: (context: any, category) => {
+      ApiService.post('/category', category)
+        .then((response) => {
+          context.commit(SET_CATEGORIES, response.data);
+        })
+        .catch(({ response }) => {
+          context.commit(SET_ERROR, response.data);
+        });
+    },
+    [CREATE_PRODUCT]: (context: any, product) => {
+      ApiService.post('/product', product)
+        .then((response) => {
+          context.commit(SET_PRODUCTS, response.data);
         })
         .catch(({ response }) => {
           context.commit(SET_ERROR, response.data);
